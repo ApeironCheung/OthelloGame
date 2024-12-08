@@ -3,7 +3,12 @@ package ca.yorku.eecs3311.othello.view;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
-
+/*********************View Part**************************************************
+ * View-----------------indexPage		: buttons choosing different opponents	*
+ * 		L gamePage------GameInfoPage	: shows game infos						*
+ * 					L	GameBoardPage	: buttons of making moves				*
+ * 					L	GameButtons		: save/load/restart/undo/redo buttons	*
+ * ******************************************************************************/
 public class GameInfoPage {
 
 	static final int VGAP = 10;

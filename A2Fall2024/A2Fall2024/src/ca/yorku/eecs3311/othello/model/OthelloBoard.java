@@ -17,7 +17,7 @@ package ca.yorku.eecs3311.othello.model;
 public class OthelloBoard {
 	public static final char EMPTY = ' ', P1 = 'X', P2 = 'O', BOTH = 'B';
 	private int dim = 8;
-	private char[][] board;
+	protected char[][] board;
 
 	public OthelloBoard(int dim) {
 		this.dim = dim;
@@ -30,6 +30,14 @@ public class OthelloBoard {
 		int mid = this.dim / 2;
 		this.board[mid - 1][mid - 1] = this.board[mid][mid] = P1;
 		this.board[mid][mid - 1] = this.board[mid - 1][mid] = P2;
+	}
+	//for load game or undo
+	public OthelloBoard(char[][] board) {
+		for (int row = 0; row < this.dim; row++) {
+			for (int col = 0; col < this.dim; col++) {
+				this.board[row][col] = board[row][col];
+			}
+		}
 	}
 
 	/**
@@ -386,6 +394,18 @@ public class OthelloBoard {
 			System.out.println("hasMove("+row+","+(row-1)+",0,1)="+result);
 		}
 		
+	}
+	/*Newly added Methods:
+	 *  setBoard(char[][] board)
+	 * */
+	public void setBoard(char[][] board) {
+		if(board.length == this.getDimension()) {
+			for(int row = 0; row < board.length; row++) {
+				for(int col = 0; col < board.length; col ++) {
+					this.board[row][col] = board[row][col];
+				}
+			}
+		}
 	}
 }
 

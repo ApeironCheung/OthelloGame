@@ -1,5 +1,8 @@
 package ca.yorku.eecs3311.othello.model;
+import ca.yorku.eecs3311.othello.controller.GameFlowProcessor;
+import ca.yorku.eecs3311.othello.controller.OthelloBoardDecoder;
 import ca.yorku.eecs3311.util.*;
+
 import java.util.Random;
 
 /**
@@ -16,13 +19,16 @@ import java.util.Random;
  * @author student
  *
  */
-public class Othello {
+public class Othello implements Element{
 	public static final int DIMENSION=8; // This is an 8x8 game
 
-	private OthelloBoard board=new OthelloBoard(Othello.DIMENSION);
+	protected OthelloBoard board=new OthelloBoard(Othello.DIMENSION);
 	private char whosTurn = OthelloBoard.P1;
 	private int numMoves = 0;
-
+	protected boolean isMoveSuccess;		// For Visitor to get
+	protected Move move = new Move(-1,-1);					// For Game Flow Controller to get
+	private OthelloBoardDecoder decoder = new OthelloBoardDecoder();
+	
 	/**
 	 * return P1,P2 or EMPTY depending on who moves next.
 	 * 
@@ -57,6 +63,7 @@ public class Othello {
 			char allowedMove = board.hasMove();
 			if(allowedMove!=OthelloBoard.BOTH)this.whosTurn=allowedMove;
 			this.numMoves++;
+			this.move = new Move(row, col);
 			return true;
 		} else {
 			return false;
@@ -128,6 +135,7 @@ public class Othello {
 
 
 		Othello o = new Othello();
+		System.out.println(o.getBoardString());
 		while(!o.isGameOver()) {
 			int row = rand.nextInt(8);
 			int col = rand.nextInt(8);
@@ -138,6 +146,59 @@ public class Othello {
 			}
 		}
 
+	}
+	/**Newly Added methods:
+	 * accept(Visitor visitor)		: accept Visitor
+	 * makeMove(int row, int col)	: record move for Getters to get
+	 * Move getMove()				: for Observer to get move
+	 * resumeGame(char[][] board)	: for load game or undo
+	 * void update(Observable o)	: Validate move for Controller 
+	 * 								  Load Game/Undo for Game State manager
+	 * isMoveSuccess				: let visitor know is move success
+	 * */
+
+	@Override
+	public void accept(Visitor visitor) {
+		visitor.visitOthello(this);
+	}
+	public void resumeGame(char[][] board) {
+		this.board = new OthelloBoard(board);
+	}
+	public boolean makeMove(int row, int col) {
+		if(this.move(row, col)) {
+			this.move = new Move(row, col);
+			return true;
+		}else {
+			return false;
+		}
+	}
+	//return the last player's move
+	public Move getMove() {
+		return this.move;
+	}
+	
+	public void loadGame(Othello othello) {
+		this.numMoves = othello.getNumMoves();
+		this.setBoard(this.decoder.getBoard(othello));
+		this.whosTurn = othello.getWhosTurn();
+		System.out.println("Othello load game:\n" + this.getBoardString());
+	}
+	public void restartGame() {
+		this.numMoves = 0;
+		this.setBoard(this.decoder.resetBoard());
+		this.whosTurn = OthelloBoard.P1;
+	}
+	public int getNumMoves() {
+		return this.numMoves;
+	}
+	
+	private void setBoard(char[][] boardStr) {
+		OthelloBoard board = (OthelloBoard) this.board;
+		board.setBoard(boardStr);
+	}
+
+	public boolean isMoveSuscess() {
+		return this.isMoveSuccess;
 	}
 }
 

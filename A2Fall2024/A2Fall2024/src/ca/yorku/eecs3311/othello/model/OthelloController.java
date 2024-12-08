@@ -3,7 +3,7 @@ package ca.yorku.eecs3311.othello.model;
 public abstract class OthelloController {
 
 	protected Othello othello;
-	protected Player player1, player2;
+	Player player1, player2;
 
 	/**
 	 * Constructs a new OthelloController with a new Othello game, ready to play

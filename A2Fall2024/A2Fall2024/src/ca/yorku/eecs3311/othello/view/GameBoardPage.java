@@ -8,11 +8,22 @@ import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
-
+/*********************View Part**************************************************
+ * View-----------------indexPage		: buttons choosing different opponents	*
+ * 		L gamePage------GameInfoPage	: shows game infos						*
+ * 					L	GameBoardPage	: buttons of making moves				*
+ * 					L	GameButtons		: save/load/restart/undo/redo buttons	*
+ * ******************************************************************************/
 public class GameBoardPage extends Observable implements EventHandler<ActionEvent> {
 	static final int BUTTON_WH = 50;
 	GridPane gameBoard;
 	Move move;				//store onclick button's row, col into Move
+	/*@ invariant
+	  board != null && board.length == Othello.DIMENSION
+	 	&& (\forall int i; 0<= i< board.length; board[i].length ==Othello.DIMENSION); 
+	 	&& 0 <= row && row < Othello.DIMENSION
+	 	&& 0 <= col && col < Othello.DIMENSION 
+	  @*/
 
 	public GameBoardPage() {
 		this.gameBoard = startBoard();
@@ -23,7 +34,6 @@ public class GameBoardPage extends Observable implements EventHandler<ActionEven
 	public Move getMove() {
 		return this.move;
 	}
-
 	//update button images of gameboard
 	public void updateGrid(char[][] board) {
 		for (int row = 0; row < Othello.DIMENSION; row++) {
@@ -75,6 +85,7 @@ public class GameBoardPage extends Observable implements EventHandler<ActionEven
 		return button;
 	}
 
+	/*@requires button instanceof Button && button != null */
 	//update the image of buttons
 	private void updateButtonImage(Button button, char[][] board, int row, int col) {
 		char token = board[row][col];

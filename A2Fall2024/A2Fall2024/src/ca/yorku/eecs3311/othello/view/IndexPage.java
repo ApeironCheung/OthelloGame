@@ -17,7 +17,12 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
-
+/*********************View Part**************************************************
+ * View-----------------indexPage		: buttons choosing different opponents	*
+ * 		L gamePage------GameInfoPage	: shows game infos						*
+ * 					L	GameBoardPage	: buttons of making moves				*
+ * 					L	GameButtons		: save/load/restart/undo/redo buttons	*
+ * ******************************************************************************/
 public class IndexPage extends Observable{
 
 	Scene page;
@@ -125,6 +130,7 @@ public class IndexPage extends Observable{
 		});
 		return btn;
 	}
+	//for observers to know which strategy
 	public String getAction() {
 		return this.action;
 	}

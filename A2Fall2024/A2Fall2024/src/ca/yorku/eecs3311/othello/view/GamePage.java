@@ -2,7 +2,7 @@ package ca.yorku.eecs3311.othello.view;
 
 import ca.yorku.eecs3311.othello.model.Othello;
 import ca.yorku.eecs3311.othello.model.OthelloBoard;
-import ca.yorku.eecs3311.othello.viewcontroller.OthelloControllerGUI;
+import ca.yorku.eecs3311.othello.viewcontroller.Reporter;
 import ca.yorku.eecs3311.util.Observable;
 import ca.yorku.eecs3311.util.Observer;
 import javafx.scene.Scene;
@@ -47,27 +47,18 @@ public class GamePage implements Observer{
 	
 	@Override
 	public void update(Observable o) {
-		//depends on action from CommandSender, do different actions by if else
-		if (o instanceof OthelloControllerGUI) {
-			OthelloControllerGUI ocg = (OthelloControllerGUI) o;
-			String command = ocg.getAction();
-			if(command == "report") {
-				//update player's count, board, who moves next
-				this.info.P1count.setText("" + ocg.getCount(OthelloBoard.P1));
-				this.info.P2count.setText("" + ocg.getCount(OthelloBoard.P2));
-				String currPlayer = ocg.getWhosTurn() == OthelloBoard.P1? "Federation"	:
-									ocg.getWhosTurn() == OthelloBoard.P2? "Zeon"		:"";
-				this.info.report.setText(currPlayer + " moves next");
-				this.board.updateGrid(ocg.getBoard());
-			}else if(command == "reportMove") {
-				//update game info
-				this.info.reportMove.setText(ocg.getReport());
-			}else if(command == "reportFinal") {
-				//show winner and final result
-				this.info.reportMove.setText(ocg.getReport());
-				this.board.updateGrid(ocg.getBoard());
-			}
+		if (o instanceof Reporter) {
+			Reporter reporter = (Reporter) o;			
+			//update player's count, board, who moves next
+			this.info.P1count.setText("" + reporter.getCount(OthelloBoard.P1));
+			this.info.P2count.setText("" + reporter.getCount(OthelloBoard.P2));
+			String currPlayer = reporter.getWhosTurn() == OthelloBoard.P1? "Federation"	:
+								reporter.getWhosTurn() == OthelloBoard.P2? "Zeon"		:
+																			"No one"	;
+			this.info.report.setText(currPlayer + " moves next");
+			this.board.updateGrid(reporter.getBoard());	
+			//update game info
+			this.info.reportMove.setText(reporter.getReport());			
 		}
 	}
-
 }

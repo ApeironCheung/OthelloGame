@@ -21,6 +21,7 @@ public class MVCApplication extends Application {
 		
 		// CONTROLLER
 		// CONTROLLER->MODEL hookup
+		
 		// https://docs.oracle.com/javase/8/javafx/events-tutorial/processing.htm#CEGJAAFD
 		// https://docs.oracle.com/javase/8/javafx/api/javafx/event/Event.html
 		CButtonPressEventHandler cpresshandler=new CButtonPressEventHandler(mcounter);
